@@ -7,7 +7,12 @@ using UserManagement.Enities;
 
 namespace UserManagement.Persistance.Repositories.Interfaces
 {
-    public interface IUserRepository: IGenericRepository<User>
+    public interface IUserRepository
     {
+        Task<IEnumerable<User>> GetAllAsync();
+        Task<User?> GetByIdAsync(long id);
+        Task AddAsync(User user);
+        Task UpdateAsync(User user);
+        Task SoftDeleteAsync(User user);
     }
 }

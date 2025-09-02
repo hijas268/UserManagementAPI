@@ -6,6 +6,8 @@ using UserManagement.Persistance.DataContexts;
 using Microsoft.AspNetCore.Authentication.JwtBearer;
 using Microsoft.IdentityModel.Tokens;
 using System.Text;
+using Microsoft.EntityFrameworkCore.Metadata.Internal;
+using Microsoft.Extensions.DependencyInjection;
 
 namespace UserManagement.Utils.Extensions
 {
@@ -13,29 +15,7 @@ namespace UserManagement.Utils.Extensions
     {
         public static IServiceCollection AddApplicationConfigurations(this IServiceCollection services, IConfiguration config)
         {
-            //Swagger
-            services.AddSwaggerGen(option =>
-            {
-                option.SwaggerDoc("v1", new OpenApiInfo { Title = "SDD,UserManagement.Backend.API", Version = "v1" });
-                option.AddSecurityDefinition("Bearer", new OpenApiSecurityScheme()
-                {
-                    Name = "Authorization",
-                    Type = SecuritySchemeType.ApiKey,
-                    Scheme = "Bearer",
-                    BearerFormat = "JWT",
-                    In = ParameterLocation.Header,
-                    Description = "JWT Authorization header using the Bearer scheme. \r\n\r\n Enter 'Bearer' [space] and then your token in the text input below.\r\n\r\nExample: \"Bearer 12345abcdef\"",
 
-                });
-                option.AddSecurityRequirement(new OpenApiSecurityRequirement { { new OpenApiSecurityScheme
-                    { Reference = new OpenApiReference { Type = ReferenceType.SecurityScheme, Id = "Bearer"
-                        }
-                    },
-                    new string[] {}
-
-                }
-            });
-            });
             services.AddDbContext<SddTestDbContext>(options =>
             {
 
@@ -50,20 +30,66 @@ namespace UserManagement.Utils.Extensions
                         );
                 });
             });
-            services.AddAuthentication(JwtBearerDefaults.AuthenticationScheme)
-    .AddJwtBearer(options =>
+    //        services.AddAuthentication(JwtBearerDefaults.AuthenticationScheme)
+    //.AddJwtBearer(options =>
+    //{
+    //    options.TokenValidationParameters = new TokenValidationParameters
+    //    {
+    //        ValidateIssuer = true,
+    //        ValidateAudience = true,
+    //        ValidateLifetime = true,
+    //        ValidateIssuerSigningKey = true,
+    //        ValidIssuer = config["Jwt:Issuer"],
+    //        ValidAudience = config["Jwt:Audience"],
+    //        IssuerSigningKey = new SymmetricSecurityKey(Encoding.UTF8.GetBytes(config["Jwt:Key"]))
+    //    };
+    //});
+            services.AddAuthentication(options =>
+            {
+                options.DefaultAuthenticateScheme = JwtBearerDefaults.AuthenticationScheme;
+                options.DefaultChallengeScheme = JwtBearerDefaults.AuthenticationScheme;
+            })
+.AddJwtBearer(options =>
+{
+    options.TokenValidationParameters = new TokenValidationParameters
     {
-        options.TokenValidationParameters = new TokenValidationParameters
+        ValidateIssuerSigningKey = true,
+        IssuerSigningKey = new SymmetricSecurityKey(Encoding.UTF8.GetBytes(config["Jwt:Key"])),
+        ValidateIssuer = false,
+        ValidateAudience = false
+    };
+});
+            services.AddSwaggerGen(c =>
+            {
+                c.SwaggerDoc("v1", new OpenApiInfo { Title = "UserManagement API", Version = "v1" });
+
+                // Add JWT Authentication to Swagger
+                c.AddSecurityDefinition("Bearer", new OpenApiSecurityScheme
+                {
+                    Name = "Authorization",
+                    Type = SecuritySchemeType.ApiKey,
+                    Scheme = "Bearer",
+                    BearerFormat = "JWT",
+                    In = ParameterLocation.Header,
+                    Description = "Enter 'Bearer' [space] and your JWT token"
+                });
+
+                c.AddSecurityRequirement(new OpenApiSecurityRequirement
+    {
         {
-            ValidateIssuer = true,
-            ValidateAudience = true,
-            ValidateLifetime = true,
-            ValidateIssuerSigningKey = true,
-            ValidIssuer = config["Jwt:Issuer"],
-            ValidAudience = config["Jwt:Audience"],
-            IssuerSigningKey = new SymmetricSecurityKey(Encoding.UTF8.GetBytes(config["Jwt:Key"]))
-        };
+            new OpenApiSecurityScheme
+            {
+                Reference = new OpenApiReference
+                {
+                    Type = ReferenceType.SecurityScheme,
+                    Id = "Bearer"
+                }
+            },
+            Array.Empty<string>()
+        }
     });
+            });
+
             services.AddCors(options =>
             {
                 options.AddPolicy("AllowAngularOrigins", builder =>

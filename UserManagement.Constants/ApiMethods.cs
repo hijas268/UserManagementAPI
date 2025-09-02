@@ -9,5 +9,6 @@ namespace UserManagement.Constants
     public static class ApiMethods
     {
         public const string CreateUser = "CreateUser";
+        public const string GetAllUsers = "GetAllUsers";
     }
 }

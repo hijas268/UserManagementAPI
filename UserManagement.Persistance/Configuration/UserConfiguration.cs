@@ -6,6 +6,8 @@ using System.Threading.Tasks;
 using Microsoft.EntityFrameworkCore.Metadata.Builders;
 using Microsoft.EntityFrameworkCore;
 using UserManagement.Enities;
+using BCrypt.Net;
+using System.Diagnostics;
 
 namespace UserManagement.Persistance.Configuration
 {
@@ -26,12 +28,7 @@ namespace UserManagement.Persistance.Configuration
             builder.Property(u => u.PasswordHash)
                    .IsRequired();
 
-            builder.Property(u => u.PasswordSalt)
-                   .IsRequired();
-
-            builder.Property(u => u.Role)
-                   .IsRequired()
-                   .HasMaxLength(50);
+         
 
             //builder.Property(u => u.CreatedAt)
             //       .HasDefaultValueSql("GETUTCDATE()");
@@ -43,25 +40,26 @@ namespace UserManagement.Persistance.Configuration
             builder.HasIndex(u => u.Email).IsUnique();
 
             // ---------- Seed Data ----------
+            
             //builder.HasData(
             //    new User
             //    {
             //        Id = Guid.NewGuid(),
             //        Username = "admin",
             //        Email = "admin@sdd.com",
-            //        PasswordHash = "AdminHashedPasswordHere",
             //        PasswordSalt = "AdminSaltHere",
             //        Role = "Admin",
             //        CreatedAt = DateTime.UtcNow,
-            //        IsDeleted = false
+            //        IsDeleted = false,
+            //        PasswordHash = BCrypt.Net.BCrypt.HashPassword("Admin123!"), // plaintext password hashed
+                    
             //    },
             //    new User
             //    {
             //        Id = Guid.NewGuid(),
             //        Username = "user",
             //        Email = "user@sdd.com",
-            //        PasswordHash = "UserHashedPasswordHere",
-            //        PasswordSalt = "UserSaltHere",
+            //        PasswordHash = BCrypt.Net.BCrypt.HashPassword("User123!"),
             //        Role = "User",
             //        CreatedAt = DateTime.UtcNow,
             //        IsDeleted = false
@@ -71,8 +69,7 @@ namespace UserManagement.Persistance.Configuration
             //        Id = Guid.NewGuid(),
             //        Username = "readonly",
             //        Email = "readonly@sdd.com",
-            //        PasswordHash = "ReadOnlyHashedPasswordHere",
-            //        PasswordSalt = "ReadOnlySaltHere",
+            //        PasswordHash = BCrypt.Net.BCrypt.HashPassword("ReadOnly123!"),
             //        Role = "ReadOnlyUser",
             //        CreatedAt = DateTime.UtcNow,
             //        IsDeleted = false

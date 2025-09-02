@@ -19,7 +19,7 @@ namespace UserManagement.Persistance.DataContexts
 
         public DbSet<User> Users => Set<User>();
         public DbSet<AuditTrail> AuditTrails => Set<AuditTrail>();
-
+        
         protected override void OnModelCreating(ModelBuilder modelBuilder)
         {
             modelBuilder.ApplyConfiguration(new UserConfiguration());
