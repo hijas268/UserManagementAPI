@@ -6,4 +6,14 @@
     <Nullable>enable</Nullable>
   </PropertyGroup>
 
+  <ItemGroup>
+    <PackageReference Include="AutoMapper" Version="15.0.1" />
+  </ItemGroup>
+
+  <ItemGroup>
+    <ProjectReference Include="..\UserManagement.Constants\UserManagement.Constants.csproj" />
+    <ProjectReference Include="..\UserManagement.Models\UserManagement.Models.csproj" />
+    <ProjectReference Include="..\UserManagement.Persistance\UserManagement.Persistance.csproj" />
+  </ItemGroup>
+
 </Project>

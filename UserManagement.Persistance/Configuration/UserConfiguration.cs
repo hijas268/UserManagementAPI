@@ -33,11 +33,11 @@ namespace UserManagement.Persistance.Configuration
                    .IsRequired()
                    .HasMaxLength(50);
 
-            builder.Property(u => u.CreatedAt)
-                   .HasDefaultValueSql("GETUTCDATE()");
+            //builder.Property(u => u.CreatedAt)
+            //       .HasDefaultValueSql("GETUTCDATE()");
 
-            builder.Property(u => u.IsDeleted)
-                   .HasDefaultValue(false);
+            //builder.Property(u => u.IsDeleted)
+            //       .HasDefaultValue(false);
 
             builder.HasIndex(u => u.Username).IsUnique();
             builder.HasIndex(u => u.Email).IsUnique();

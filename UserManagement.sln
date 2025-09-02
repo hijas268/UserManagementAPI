@@ -1,7 +1,7 @@
 ﻿
 Microsoft Visual Studio Solution File, Format Version 12.00
 # Visual Studio Version 17
-VisualStudioVersion = 17.12.35514.174 d17.12
+VisualStudioVersion = 17.12.35514.174
 MinimumVisualStudioVersion = 10.0.40219.1
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "UserManagement", "UserManagement\UserManagement.csproj", "{D5B8EABD-9D50-442C-8F5F-CE7BD71C731C}"
 EndProject
@@ -18,6 +18,10 @@ EndProject
 Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "CoreBusiness", "CoreBusiness", "{8FCFD4B2-484C-45F3-84F6-5A92F42DC5DE}"
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "UserManagement.Core", "UserManagement.Core\UserManagement.Core.csproj", "{1C554BCE-9924-4B4F-834F-3E6034D1EF36}"
+EndProject
+Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Common", "Common", "{8AB25D21-5FAB-46C0-9448-3EC738F92F9A}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "UserManagement.Constants", "UserManagement.Constants\UserManagement.Constants.csproj", "{C7FFA0EE-89D6-4E2D-B5B1-A746188495DB}"
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
@@ -45,6 +49,10 @@ Global
 		{1C554BCE-9924-4B4F-834F-3E6034D1EF36}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{1C554BCE-9924-4B4F-834F-3E6034D1EF36}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{1C554BCE-9924-4B4F-834F-3E6034D1EF36}.Release|Any CPU.Build.0 = Release|Any CPU
+		{C7FFA0EE-89D6-4E2D-B5B1-A746188495DB}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{C7FFA0EE-89D6-4E2D-B5B1-A746188495DB}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{C7FFA0EE-89D6-4E2D-B5B1-A746188495DB}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{C7FFA0EE-89D6-4E2D-B5B1-A746188495DB}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE
@@ -54,5 +62,6 @@ Global
 		{A06B8955-522A-439C-B52A-549272DED63C} = {438FBC3B-F9E1-4DCF-8C79-8026B74D2988}
 		{37267B17-FEA0-401D-9CB6-56CDC38785C8} = {3CFAA649-C578-469C-AA4B-D666DA06DCFE}
 		{1C554BCE-9924-4B4F-834F-3E6034D1EF36} = {8FCFD4B2-484C-45F3-84F6-5A92F42DC5DE}
+		{C7FFA0EE-89D6-4E2D-B5B1-A746188495DB} = {8AB25D21-5FAB-46C0-9448-3EC738F92F9A}
 	EndGlobalSection
 EndGlobal
