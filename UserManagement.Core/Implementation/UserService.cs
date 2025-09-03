@@ -39,10 +39,11 @@ namespace UserManagement.Core.Implementation
         public async Task<User> CreateAsync(User user, string currentUser)
         {
             try {
-            user.PasswordHash = BCrypt.Net.BCrypt.HashPassword(user.PasswordHash);
-            //user.CreatedBy = currentUser;
-           // user.LastModifiedBy = currentUser;
-            _db.Users.Add(user);
+            //user.PasswordHash = BCrypt.Net.BCrypt.HashPassword(user.PasswordHash);
+                //user.CreatedBy = currentUser;
+               
+                // user.LastModifiedBy = currentUser;
+                _db.Users.Add(user);
             await _db.SaveChangesAsync();
             return user;
             }
