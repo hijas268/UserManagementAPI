@@ -30,7 +30,10 @@ namespace UserManagement.Persistance.Repositories.Implementation
         {
             return await _dbSet.ToListAsync();
         }
-
+        public IQueryable<T> GetAll()
+        {
+            return _dbSet.AsQueryable();
+        }
         public async Task<IEnumerable<T>> FindAsync(Expression<Func<T, bool>> predicate)
         {
             return await _dbSet.Where(predicate).ToListAsync();

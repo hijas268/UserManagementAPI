@@ -14,13 +14,19 @@ using UserManagement.Models;
 using UserManagement.Persistance.DataContexts;
 using UserManagement.Persistance.UnitOfWork.Interfaces;
 using static System.Net.Mime.MediaTypeNames;
+using UserManagement.Persistance.UnitOfWork.Implementation;
+using Microsoft.AspNetCore.Http;
 
 namespace UserManagement.Core.Implementation
 {
     public class UserService : IUserService
     {
         private readonly SddTestDbContext _db;
-        public UserService(SddTestDbContext db) { _db = db; }
+        private readonly IAuditTrailService _auditTrailService;
+        public UserService(SddTestDbContext db, IAuditTrailService auditTrailService) {
+            _db = db;
+            _auditTrailService = auditTrailService;
+        }
 
         public async Task<User?> AuthenticateAsync(string username, string password)
         {
@@ -43,9 +49,15 @@ namespace UserManagement.Core.Implementation
                 //user.CreatedBy = currentUser;
                
                 // user.LastModifiedBy = currentUser;
-                _db.Users.Add(user);
+            _db.Users.Add(user);
             await _db.SaveChangesAsync();
-            return user;
+            await _auditTrailService.LogAsync(
+            "CreateUser",
+            currentUser,
+            "User",
+            user.Id.ToString(),""    
+            );
+                return user;
             }
             catch (Exception ex)
             {
@@ -62,6 +74,31 @@ namespace UserManagement.Core.Implementation
             //user.LastModifiedIp = ip;
             user.LastModifiedAt = DateTime.UtcNow;
             await _db.SaveChangesAsync();
+        }
+        public async Task<(IEnumerable<User> Users, int TotalCount)> GetUsersAsync(
+    string? search, int? role, int page, int pageSize)
+        {
+            var query = _db.Users.Where(x=>x.IsDeleted==false); // returns IQueryable<User>
+
+            if (!string.IsNullOrWhiteSpace(search))
+            {
+                query = query.Where(u => u.Username.Contains(search) || u.Email.Contains(search));
+            }
+
+            if (role!=0 && role!=null)
+            {
+                query = query.Where(u => u.RoleId == role);
+            }
+
+            var totalCount = await query.CountAsync();
+
+            var users = await query
+                .OrderBy(u => u.Username)
+                .Skip((page - 1) * pageSize)
+                .Take(pageSize)
+                .ToListAsync();
+
+            return (users, totalCount);
         }
 
         public async Task<IEnumerable<User>> GetAllAsync() =>

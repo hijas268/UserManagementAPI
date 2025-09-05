@@ -8,12 +8,12 @@ namespace UserManagement.Enities
 {
     public class AuditTrail
     {
-        public Guid Id { get; set; }
-        public Guid UserId { get; set; }
-        public string Action { get; set; } = string.Empty;
-        public string TableName { get; set; } = string.Empty;
-        public string? RecordId { get; set; }
-        public DateTime ActionDate { get; set; } = DateTime.UtcNow;
+        public long Id { get; set; }
+        public string Action { get; set; }
+        public string PerformedBy { get; set; }
+        public string EntityName { get; set; } 
+        public string? EntityId { get; set; } 
+        public DateTime PerformedAt { get; set; }
         public string? IpAddress { get; set; }
     }
 }

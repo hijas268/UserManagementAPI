@@ -16,12 +16,42 @@ namespace UserManagement.Persistance.UnitOfWork.Implementation
     {
         private readonly SddTestDbContext _context;
         private Lazy<IGenericRepository<User>> _userRepository;
+        public IUserRepository _Users { get; private set; }
+        private Lazy<IGenericRepository<AuditTrail>>? _auditTrails;
 
-        public void Dispose()
+
+
+        //public UnitOfWork(SddTestDbContext context,IUserRepository userRepository, IAuditTrailRepository auditTrailRepository)
+        //{
+        //    _context = context;
+        //    _Users = userRepository;
+          
+        //}
+        //public void Dispose()
+        //{
+        //    _context.Dispose();
+        //}
+
+        public int SaveChanges()
         {
-            throw new NotImplementedException();
+            return _context.SaveChanges();
         }
-        public IGenericRepository<User> User
+
+        public Task<int> SaveChangesAsync()
+        {
+            return _context.SaveChangesAsync();
+        }
+        public IGenericRepository<AuditTrail> AuditTrails
+        {
+            get
+            {
+                _auditTrails ??= new Lazy<IGenericRepository<AuditTrail>>(
+                    () => new GenericRepository<AuditTrail>(_context)
+                );
+                return _auditTrails.Value;
+            }
+        }
+        public IGenericRepository<User> Users
         {
             get
             {
@@ -29,5 +59,7 @@ namespace UserManagement.Persistance.UnitOfWork.Implementation
                 return _userRepository.Value;
             }
         }
+
+ 
     }
 }

@@ -8,8 +8,12 @@ using UserManagement.Persistance.Repositories.Interfaces;
 
 namespace UserManagement.Persistance.UnitOfWork.Interfaces
 {
-    public interface IUnitOfWork:IDisposable
+    public interface IUnitOfWork
     {
-        IGenericRepository<User> User { get; }
+        IGenericRepository<User> Users { get; }
+        IGenericRepository<AuditTrail> AuditTrails { get; }
+        int SaveChanges();
+    
+        Task<int> SaveChangesAsync();
     }
 }

@@ -14,7 +14,11 @@ namespace UserManagement.Persistance.Repositories.Implementation
     {
       
         private readonly SddTestDbContext _db;
-        public UserRepository(SddTestDbContext db) { _db = db; }
+        protected  DbSet<User> _dbSet;
+        public UserRepository(SddTestDbContext db, DbSet<User> dbSet )
+        {
+            _db = db; _dbSet = dbSet;
+        }
 
         public async Task<IEnumerable<User>> GetAllAsync() =>
             await _db.Users.Where(u => !u.IsDeleted).ToListAsync();
@@ -38,6 +42,11 @@ namespace UserManagement.Persistance.Repositories.Implementation
         {
             user.IsDeleted = true;
             await UpdateAsync(user);
+        }
+
+        public async Task<IQueryable<User>> GetAll()
+        {
+               return _dbSet.AsQueryable();
         }
     }
 }

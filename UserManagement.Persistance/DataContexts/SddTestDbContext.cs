@@ -23,7 +23,7 @@ namespace UserManagement.Persistance.DataContexts
         protected override void OnModelCreating(ModelBuilder modelBuilder)
         {
             modelBuilder.ApplyConfiguration(new UserConfiguration());
-           // modelBuilder.ApplyConfiguration(new Configurations.AuditTrailConfiguration());
+            modelBuilder.ApplyConfiguration(new AuditTrailConfiguration());
 
             base.OnModelCreating(modelBuilder);
         }

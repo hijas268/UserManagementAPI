@@ -26,7 +26,7 @@ namespace UserManagement.Controllers
         private string CurrentIp => HttpContext.Connection.RemoteIpAddress?.ToString() ?? "0.0.0.0";
 
         [HttpGet]
-        [Authorize(Roles = "Admin,User,ReadOnlyUser")]
+        [Authorize]
         public async Task<IActionResult> GetAll() => Ok(await _userService.GetAllAsync());
 
         [HttpGet("{id}")]
@@ -48,13 +48,21 @@ namespace UserManagement.Controllers
 
         [HttpPut("{id}")]
         [Authorize(Roles = "Admin")]
+        //[Authorize]
         public async Task<IActionResult> Update(long id, User user)
         {
             if (id != user.Id) return BadRequest();
             var updated = await _userService.UpdateAsync(user, CurrentUser, CurrentIp);
             return Ok(updated);
         }
+        [HttpGet("searchusers")]
+        [Authorize]
+        public async Task<IActionResult> GetUsersSearch([FromQuery] string? search, [FromQuery] int? role, [FromQuery] int page = 1, [FromQuery] int pageSize = 10)
+        {
+            var (users, totalCount) = await _userService.GetUsersAsync(search, role, page, pageSize);
 
+            return Ok(new { data = users, totalCount });
+        }
         [HttpDelete("{id}")]
         [Authorize(Roles = "Admin")]
         public async Task<IActionResult> Delete(long id)
@@ -63,20 +71,22 @@ namespace UserManagement.Controllers
             return NoContent();
         }
         [HttpPost("create")]
-       // [Authorize(Roles = "Admin")]
+        [Authorize(Roles = "Admin")]
         public async Task<IActionResult> CreateUser([FromBody] CreateUserRequest request)
         {
             if (!ModelState.IsValid) return BadRequest(ModelState);
-
+            string passwordSalt = BCrypt.Net.BCrypt.GenerateSalt();
             var user = new User
             {
                
                 Username = request.Username,
                 Email = request.Email,
                 RoleId = request.RoleId,
-                PasswordHash = BCrypt.Net.BCrypt.HashPassword(request.Password),
+                PasswordHash = BCrypt.Net.BCrypt.HashPassword(request.Password,passwordSalt),
+                PasswordSalt=passwordSalt,
                 CreatedAt = DateTime.UtcNow,
                 LastModifiedAt = DateTime.UtcNow,
+                IsDeleted=false,
                 //CreatedBy = CurrentUser,
                 //LastModifiedBy = CurrentUser,
                 //LastModifiedIp = CurrentIp
@@ -86,14 +96,7 @@ namespace UserManagement.Controllers
             return CreatedAtAction(nameof(Get), new { id = user.Id }, user);
         }
 
-        // DTO for creating user
-        public class CreateUserRequest
-        {
-            public string Username { get; set; } = null!;
-            public string Email { get; set; } = null!;
-            public string Password { get; set; } = null!; // plaintext input
-            public int RoleId { get; set; }  // Admin/User/ReadOnlyUser
-        }
+
 
     }
 }

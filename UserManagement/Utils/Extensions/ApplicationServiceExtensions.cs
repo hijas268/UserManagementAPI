@@ -16,8 +16,11 @@ namespace UserManagement.Utils.Extensions
 
             services.AddScoped<IUnitOfWork, UnitOfWork>();
             services.AddAutoMapper(typeof(AutoMapperProfiles).Assembly);
+            //services.AddScoped(typeof(IGenericRepository<>), typeof(GenericRepository<>));
             services.AddScoped<IUserService, UserService>();
             services.AddScoped<IUserRepository, UserRepository>();
+            services.AddScoped<IAuditTrailService, AuditTrailService>();
+            services.AddScoped<IAuditTrailRepository, AuditTrailRepository>();
 
             return services;
         }

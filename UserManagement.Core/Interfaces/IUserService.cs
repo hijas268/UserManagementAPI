@@ -21,5 +21,7 @@ namespace UserManagement.Core.Interfaces{
         Task<User> UpdateAsync(User user, string currentUser, string ip);
         Task DeleteAsync(long id, string currentUser, string ip);
         Task<User?> AuthenticateAsync(string username, string password);
+        Task<(IEnumerable<User> Users, int TotalCount)> GetUsersAsync(
+      string? search, int? role, int page, int pageSize);
     }
 }
