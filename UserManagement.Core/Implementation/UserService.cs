@@ -49,14 +49,15 @@ namespace UserManagement.Core.Implementation
                 //user.CreatedBy = currentUser;
                
                 // user.LastModifiedBy = currentUser;
-            _db.Users.Add(user);
+                _db.Users.Add(user);
             await _db.SaveChangesAsync();
             await _auditTrailService.LogAsync(
             "CreateUser",
-            currentUser,
-            "User",
-            user.Id.ToString(),""    
-            );
+    currentUser,
+    "User",
+                user.Id.ToString(),""
+    
+);
                 return user;
             }
             catch (Exception ex)
@@ -74,6 +75,13 @@ namespace UserManagement.Core.Implementation
             //user.LastModifiedIp = ip;
             user.LastModifiedAt = DateTime.UtcNow;
             await _db.SaveChangesAsync();
+            await _auditTrailService.LogAsync(
+"DeleteUser",
+currentUser,
+"User",
+    user.Id.ToString(), ""
+
+);
         }
         public async Task<(IEnumerable<User> Users, int TotalCount)> GetUsersAsync(
     string? search, int? role, int page, int pageSize)
@@ -114,6 +122,13 @@ namespace UserManagement.Core.Implementation
             user.LastModifiedAt = DateTime.UtcNow;
             _db.Users.Update(user);
             await _db.SaveChangesAsync();
+            await _auditTrailService.LogAsync(
+"UpdateUser",
+currentUser,
+"User",
+user.Id.ToString(), ""
+
+);
             return user;
         }
     }

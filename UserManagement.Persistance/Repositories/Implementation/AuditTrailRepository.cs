@@ -18,9 +18,27 @@ namespace UserManagement.Persistance.Repositories.Implementation
             _db = db;
         }
 
+        public async Task AddAsync(AuditTrail auditTrail)
+        {
+            try
+            {
+                _db.AuditTrails.Add(auditTrail);
+                await _db.SaveChangesAsync();
+            }
+            catch (Exception ex) {
+                throw ex;
+            }
+         
+        }
+
         public async Task<IEnumerable<AuditTrail>> GetAllAsync()
         {
-           return await _db.AuditTrails.ToListAsync();
+            return await _db.AuditTrails
+     
+       .ToListAsync();
         }
+     
+
+
     }
 }

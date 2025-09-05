@@ -23,6 +23,7 @@ namespace UserManagement.Controllers
         }
 
         private string CurrentUser => User.FindFirstValue(ClaimTypes.NameIdentifier) ?? "System";
+  
         private string CurrentIp => HttpContext.Connection.RemoteIpAddress?.ToString() ?? "0.0.0.0";
 
         [HttpGet]

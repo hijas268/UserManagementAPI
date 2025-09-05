@@ -8,12 +8,13 @@ namespace UserManagement.Models
 {
     public class AuditTrailDto
     {
-        public Guid Id { get; set; }
-        public Guid UserId { get; set; }
+        public long Id { get; set; }
         public string Action { get; set; }
-        public string TableName { get; set; } 
-        public string? RecordId { get; set; }
-        public DateTime ActionDate { get; set; } 
-        public string? IpAddress { get; set; }
+        public string EntityName { get; set; }
+        public string PerformedBy { get; set; }
+        public string EntityId { get; set; }
+        public DateTime PerformedAt { get; set; }
+        public string IpAddress { get; set; }
+        public string UserName { get; set; }
     }
 }

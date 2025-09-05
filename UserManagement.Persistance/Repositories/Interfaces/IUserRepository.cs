@@ -10,7 +10,7 @@ namespace UserManagement.Persistance.Repositories.Interfaces
     public interface IUserRepository
     {
         Task<IEnumerable<User>> GetAllAsync();
-        Task<IQueryable<User>> GetAll();
+        //Task<IQueryable<User>> GetAll();
         Task<User?> GetByIdAsync(long id);
         Task AddAsync(User user);
         Task UpdateAsync(User user);

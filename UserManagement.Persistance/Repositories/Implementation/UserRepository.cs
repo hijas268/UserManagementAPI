@@ -14,10 +14,10 @@ namespace UserManagement.Persistance.Repositories.Implementation
     {
       
         private readonly SddTestDbContext _db;
-        protected  DbSet<User> _dbSet;
-        public UserRepository(SddTestDbContext db, DbSet<User> dbSet )
+        //protected  DbSet<User> _dbSet;
+        public UserRepository(SddTestDbContext db )
         {
-            _db = db; _dbSet = dbSet;
+            _db = db; //_dbSet = dbSet;
         }
 
         public async Task<IEnumerable<User>> GetAllAsync() =>
@@ -44,9 +44,9 @@ namespace UserManagement.Persistance.Repositories.Implementation
             await UpdateAsync(user);
         }
 
-        public async Task<IQueryable<User>> GetAll()
-        {
-               return _dbSet.AsQueryable();
-        }
+        //public async Task<IQueryable<User>> GetAll()
+        //{
+        //       return _dbSet.AsQueryable();
+        //}
     }
 }

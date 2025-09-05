@@ -4,12 +4,13 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 using UserManagement.Enities;
+using UserManagement.Models;
 
 namespace UserManagement.Core.Interfaces
 {
     public interface IAuditTrailService
     {
         Task LogAsync(string action, string performedBy, string entityName, string? entityId, string? ipAddress);
-        Task<(IEnumerable<AuditTrail> Logs, int TotalCount)> GetLogsAsync(string? search, int page, int pageSize);
+        Task<(IEnumerable<AuditTrailDto> Logs, int TotalCount)> GetLogsAsync(string? search, int page, int pageSize);
     }
 }

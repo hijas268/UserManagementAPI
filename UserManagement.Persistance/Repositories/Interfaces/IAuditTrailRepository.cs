@@ -9,6 +9,8 @@ namespace UserManagement.Persistance.Repositories.Interfaces
 {
     public interface IAuditTrailRepository 
     {
-        Task<IEnumerable<AuditTrail>> GetAllAsync();
+        Task<IEnumerable<AuditTrail>> GetAllAsync(); 
+        Task AddAsync(AuditTrail auditTrail);
+ 
     }
 }
