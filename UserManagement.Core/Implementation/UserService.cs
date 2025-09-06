@@ -84,7 +84,7 @@ currentUser,
 );
         }
         public async Task<(IEnumerable<User> Users, int TotalCount)> GetUsersAsync(
-    string? search, int? role, int page, int pageSize)
+        string? search, int? role, int page, int pageSize)
         {
             var query = _db.Users.Where(x=>x.IsDeleted==false); // returns IQueryable<User>
 
@@ -123,13 +123,37 @@ currentUser,
             _db.Users.Update(user);
             await _db.SaveChangesAsync();
             await _auditTrailService.LogAsync(
-"UpdateUser",
-currentUser,
-"User",
-user.Id.ToString(), ""
-
-);
+            "UpdateUser",
+            currentUser,
+            "User",
+            user.Id.ToString(), ""
+            );
             return user;
+        }
+
+        public async Task<User> UpdateProfile(long id, UpdateProfileDto user, string currentuser)
+        {
+            try
+            {
+                var userinfo = await _db.Users.FindAsync(id);
+                userinfo.Id = id;
+                userinfo.Username = user.Username;
+                userinfo.Email = user.Email;
+                userinfo.LastModifiedAt = DateTime.UtcNow;
+                _db.Users.Update(userinfo);
+                await _db.SaveChangesAsync();
+                await _auditTrailService.LogAsync(
+                "UpdateUser",
+                currentuser,
+                "User",
+                userinfo.Id.ToString(), ""
+                );
+                return userinfo;
+            }
+            catch(Exception ex) {
+                throw ex;
+            }
+ 
         }
     }
 

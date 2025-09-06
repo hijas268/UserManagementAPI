@@ -28,4 +28,10 @@ namespace UserManagement.Models
         public string Password { get; set; } = null!; // plaintext input
         public int RoleId { get; set; }  // Admin/User/ReadOnlyUser
     }
+    public class UpdateProfileDto
+    {
+        public string Username { get; set; } = string.Empty;
+
+        public string Email { get; set; } = string.Empty;
+    }
 }

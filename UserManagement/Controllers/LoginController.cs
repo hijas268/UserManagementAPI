@@ -34,6 +34,7 @@ namespace UserManagement.Controllers
                 Subject = new ClaimsIdentity(new Claim[]
                 {
             new Claim(ClaimTypes.NameIdentifier, user.Username.ToString()),
+             new Claim(ClaimTypes.Sid, user.Id.ToString()),
             new Claim(ClaimTypes.Role, ((UserRole)user.RoleId).ToString())
                 }),
                 Expires = DateTime.UtcNow.AddHours(1),

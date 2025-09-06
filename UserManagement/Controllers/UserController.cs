@@ -71,6 +71,33 @@ namespace UserManagement.Controllers
             await _userService.DeleteAsync(id, CurrentUser, CurrentIp);
             return NoContent();
         }
+        [Authorize]
+        [HttpGet("me")]
+        public async Task<IActionResult> GetProfile()
+        {
+            try
+            {
+                var userId = long.Parse(User.FindFirstValue(ClaimTypes.Sid));
+                var user = await _userService.GetByIdAsync(userId);
+                if (user == null) return NotFound();
+                return Ok(new { user.Username, user.Email, Role = user.RoleId.ToString() });
+
+            }
+            catch (Exception ex)
+            {
+                throw ex;
+            }
+           
+        }
+
+        [Authorize(Roles = "Admin,User")]
+        [HttpPut("me")]
+        public async Task<IActionResult> UpdateProfile([FromBody] UpdateProfileDto dto)
+        {
+            var userId = long.Parse(User.FindFirstValue(ClaimTypes.Sid));
+            await _userService.UpdateProfile(userId, dto, CurrentUser);
+            return NoContent();
+        }
         [HttpPost("create")]
         [Authorize(Roles = "Admin")]
         public async Task<IActionResult> CreateUser([FromBody] CreateUserRequest request)
